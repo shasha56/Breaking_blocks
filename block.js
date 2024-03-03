@@ -78,7 +78,7 @@ const init = (obj) => {
     ball.x = canvas.width/2;
     ball.y = canvas.height/2;
     ball.dx = obj;
-    ball.dy = obj;
+    ball.dy = -obj;
 
     block.width = canvas.width / level[0].length;
 
