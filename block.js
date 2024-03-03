@@ -1,25 +1,36 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
+let number = 0;
+let difficult = 4;
+
 const ball = {
     x: null,
     y: null,
     width: 5,
     height: 5,
-    speed: 4,
+    radios: 5,
     dx: null,
     dy: null,
 
     update:function(){
         ctx.beginPath();
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.arc(this.x, this.y, this.radios, 0, Math.PI*2);
         ctx.fill();
         ctx.closePath();
 
-        if(this.x < 0 || this.x > canvas.width) this.dx*=-1;
-        if(this.y < 0 || this.y > canvas.height) this.dy*=-1;
+        if(this.x - this.radios < 0 || this.x + this.radios > canvas.width) this.dx*=-1;
+        if(this.y - this.radios < 0) this.dy*=-1;
         this.x +=this.dx;
         this.y +=this.dy;
+
+        if(this.y + this.radios > canvas.height){
+            ctx.beginPath();
+            ctx.font = '50px Roboto medium';
+            ctx.fillText('game over!', canvas.width / 2 - 135, canvas.height / 2);
+            ctx.closePath();
+            init(difficult);
+        }
     }
 }
 const paddle = {
@@ -60,14 +71,14 @@ const level = [
     [1,1,1,1,1,1],
 ]
 
-const init = () => {
+const init = (obj) => {
     paddle.x = canvas.width/2 - paddle.width/2;
     paddle.y = canvas.height - paddle.height;
 
     ball.x = canvas.width/2;
     ball.y = canvas.height/2;
-    ball.dx = ball.speed;
-    ball.dy = ball.speed;
+    ball.dx = obj;
+    ball.dy = obj;
 
     block.width = canvas.width / level[0].length;
 
@@ -80,15 +91,16 @@ const init = () => {
                     width: block.width,
                     height: block.height
                 })
+                number++;
             }
         }
     }
 }
 const collide = (obj1,obj2) => {
-    return obj1.x < obj2.x + obj2.width &&
-           obj2.x < obj1.x + obj1.width &&
-           obj1.y < obj2.y + obj2.height &&
-           obj2.y < obj1.y + obj1.height;
+    return obj1.x - obj1.width < obj2.x + obj2.width && //右端
+           obj1.x + obj1.width > obj2.x &&  //左端
+           obj1.y - obj1.height < obj2.y + obj2.height &&  //下端
+           obj1.y + obj1.height > obj2.y;  //上端
 }
 const loop = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -106,14 +118,29 @@ const loop = () => {
         if(collide(ball,brick)) {
             ball.dy *=-1;
             block.data.splice(index,1);
+            number--;
         }
     })
 
-    window.requestAnimationFrame(loop);
-} 
+    if(number === 0) {
+        ctx.beginPath();
+        ctx.font = '50px Roboto medium';
+        ctx.fillText('level up!', canvas.width / 2 - 135, canvas.height / 2);
+        ctx.closePath();
+        difficult++;
+        init(difficult);
 
-init();
+    }
+
+    console.log(difficult);
+    window.requestAnimationFrame(loop);
+
+}
+
+init(difficult);
 loop();
+
+
 
 document.addEventListener('keydown', e => {
     if(e.key === 'ArrowLeft') paddle.speed = -6;
