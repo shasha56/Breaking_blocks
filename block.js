@@ -1,8 +1,11 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
+const firstDifficult = 4;
 let number = 0;
-let difficult = 4;
+let difficult = firstDifficult;
+let nowLevel = 1;
+const dif = document.getElementById("difficult");
 
 const ball = {
     x: null,
@@ -25,10 +28,8 @@ const ball = {
         this.y +=this.dy;
 
         if(this.y + this.radios > canvas.height){
-            ctx.beginPath();
-            ctx.font = '50px Roboto medium';
-            ctx.fillText('game over!', canvas.width / 2 - 135, canvas.height / 2);
-            ctx.closePath();
+            difficult = firstDifficult;
+            nowLevel = 1;
             init(difficult);
         }
     }
@@ -72,6 +73,9 @@ const level = [
 ]
 
 const init = (obj) => {
+
+    number = 0;
+
     paddle.x = canvas.width/2 - paddle.width/2;
     paddle.y = canvas.height - paddle.height;
 
@@ -81,6 +85,8 @@ const init = (obj) => {
     ball.dy = -obj;
 
     block.width = canvas.width / level[0].length;
+
+    dif.textContent = 'level: ' + nowLevel;
 
     for(let i=0;i<level.length;i++) {
         for(let j=0;j<level[i].length;j++) {
@@ -123,22 +129,18 @@ const loop = () => {
     })
 
     if(number === 0) {
-        ctx.beginPath();
-        ctx.font = '50px Roboto medium';
-        ctx.fillText('level up!', canvas.width / 2 - 135, canvas.height / 2);
-        ctx.closePath();
         difficult++;
+        nowLevel++;
         init(difficult);
-
     }
 
-    console.log(difficult);
     window.requestAnimationFrame(loop);
 
 }
 
 init(difficult);
 loop();
+
 
 
 
