@@ -1,6 +1,55 @@
+body {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.container {
+    position: relative;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
 #game {
     background-color: #ddd;
+    border: 2px solid #000000;
+    border-bottom: 2px dotted #ff0000;
     display: block;
     margin: auto;
-    margin-top: 100px;
+    z-index: 1;
+}
+
+.difficult {
+    display: inline;
+    position: absolute;
+    color: black;
+    font-size: 30px;
+    font-weight: bold;
+    z-index: 2;
+    top: -35px; /* 上端に配置 */
+    left: 0; /* 左端に配置 */
+}
+
+.text {
+    width: 100%;
+    display: block;
+    position: absolute;
+    color: #000000;
+    font-size: 60px;
+    font-weight: bold;
+    top: 150px;
+    z-index: 3;
+    text-align: center;
+    animation: fadeOut 2s forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1; /* 透明度の初期値 */
+    }
+    to {
+        opacity: 0; /* 透明度の最終的な値 */
+    }
 }
