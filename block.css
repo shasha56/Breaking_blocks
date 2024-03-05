@@ -69,6 +69,11 @@ body {
 .btn {
     width: 20%;
     height: 35px;
-    opacity: 0.7;
     margin: 5px;
+    font-size: large;
+}
+
+.btn:hover {
+    background-color: #000000;
+    color: #ddd;
 }
