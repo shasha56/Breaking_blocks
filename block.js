@@ -150,3 +150,17 @@ document.addEventListener('keydown', e => {
 
 });
 document.addEventListener('keyup', () => paddle.speed = 0);
+
+const btn = document.getElementsByTagName('button');
+btn[0].addEventListener('touchstart', () => {
+    paddle.speed = -6;
+});
+btn[0].addEventListener('touchend', () => {
+    paddle.speed = 0;
+});
+btn[1].addEventListener('touchstart', () => {
+    paddle.speed = 6;
+});
+btn[1].addEventListener('touchend', () => {
+    paddle.speed = 0;
+});
