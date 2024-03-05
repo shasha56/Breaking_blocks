@@ -134,7 +134,7 @@ const loop = () => {
         init(difficult);
     }
 
-    window.requestAnimationFrame(loop);
+    //window.requestAnimationFrame(loop);
 
 }
 
